@@ -1,0 +1,316 @@
+{
+  "users": [
+    {
+      "id": "mock-user-1",
+      "name": "Ansh",
+      "email": "ansh@campus.edu",
+      "phone": "99002092929",
+      "studentId": "006",
+      "role": "student",
+      "createdAt": "2026-06-17T09:00:00.000Z"
+    },
+    {
+      "id": "mock-user-2",
+      "name": "Anshg",
+      "email": "anshg@campus.edu",
+      "phone": "909002293",
+      "studentId": "008",
+      "role": "student",
+      "createdAt": "2026-06-17T09:00:00.000Z"
+    },
+    {
+      "id": "admin-1",
+      "name": "Admin User",
+      "email": "admin@campus.edu",
+      "phone": "9999999999",
+      "studentId": "999",
+      "role": "admin",
+      "createdAt": "2026-06-17T09:00:00.000Z"
+    },
+    {
+      "id": "ad3c4b41-5edd-45d8-a9e5-8ec54dc041e4",
+      "name": "Anish Kumar",
+      "email": "anish@student.edu",
+      "phone": "",
+      "studentId": "",
+      "role": "student",
+      "picture": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150&q=80",
+      "createdAt": "2026-06-17T16:09:06.759Z"
+    },
+    {
+      "id": "edc2d0a0-6b3e-40ca-97f7-e1749b85cf9c",
+      "name": "Jane Doe",
+      "email": "jane@student.edu",
+      "phone": "",
+      "studentId": "",
+      "role": "student",
+      "picture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&h=150&q=80",
+      "createdAt": "2026-06-17T16:13:18.699Z"
+    }
+  ],
+  "chatSessions": [
+    {
+      "id": "1c1c07d9-5a9a-4456-9caa-d99bb2f723f3",
+      "userId": "ad3c4b41-5edd-45d8-a9e5-8ec54dc041e4",
+      "title": "Session 21:43",
+      "status": "ACTIVE",
+      "createdAt": "2026-06-17T16:13:07.374Z",
+      "updatedAt": "2026-06-17T16:13:07.374Z"
+    },
+    {
+      "id": "62606a6e-a450-4f0f-b901-0f5a16d19b81",
+      "userId": "edc2d0a0-6b3e-40ca-97f7-e1749b85cf9c",
+      "title": "I want to report a found ...",
+      "status": "ACTIVE",
+      "createdAt": "2026-06-17T16:13:18.731Z",
+      "updatedAt": "2026-06-17T16:13:18.731Z"
+    },
+    {
+      "id": "917eb851-e0b1-4db0-9e2f-36a2b9914d2f",
+      "userId": "edc2d0a0-6b3e-40ca-97f7-e1749b85cf9c",
+      "title": "I want to report a found ...",
+      "status": "ACTIVE",
+      "createdAt": "2026-06-17T19:21:43.809Z",
+      "updatedAt": "2026-06-17T19:21:43.809Z"
+    }
+  ],
+  "messages": [
+    {
+      "id": "c818892c-d50c-4cea-a5ce-1d25b751b0db",
+      "sessionId": "62606a6e-a450-4f0f-b901-0f5a16d19b81",
+      "role": "user",
+      "content": "I want to report a found item",
+      "createdAt": "2026-06-17T16:13:18.787Z"
+    },
+    {
+      "id": "02e3b88c-b9d5-40fd-a71f-111a31a8940f",
+      "sessionId": "62606a6e-a450-4f0f-b901-0f5a16d19b81",
+      "role": "assistant",
+      "content": "Oh, that's wonderful of you to report a found item! Thank you so much for helping keep our campus community connected with their belongings.\n\nTo help us log this item and hopefully reunite it with its owner, could you please tell me a bit about what you found?\n\nWhat kind of item is it? For example, is it an electronic device, a piece of clothing, a set of keys, or something else?",
+      "createdAt": "2026-06-17T16:13:20.910Z"
+    },
+    {
+      "id": "bdcab3ae-f62c-4048-b8f7-1f91fffab694",
+      "sessionId": "1c1c07d9-5a9a-4456-9caa-d99bb2f723f3",
+      "role": "user",
+      "content": "hi i lost my iphone pro max",
+      "createdAt": "2026-06-17T16:13:30.065Z"
+    },
+    {
+      "id": "490f8b76-39c0-480f-a64f-543df1347cb3",
+      "sessionId": "1c1c07d9-5a9a-4456-9caa-d99bb2f723f3",
+      "role": "assistant",
+      "content": "Oh dear, I'm so sorry to hear about your lost iPhone. That can be quite stressful, but please don't worry, we're here to help you get it back.\n\nTo help me log this report accurately and search for it, could you please tell me a little more about your iPhone Pro Max?\n\n*   What **color** is it?\n*   And do you remember the **last specific location** where you might have had it on campus?",
+      "createdAt": "2026-06-17T16:13:32.528Z"
+    },
+    {
+      "id": "a11c11f9-8128-4a34-8c37-a554872c2eca",
+      "sessionId": "1c1c07d9-5a9a-4456-9caa-d99bb2f723f3",
+      "role": "user",
+      "content": "i was iphone 17 pro max orange colour one and it was last remeber i kept on the sitting desk near library",
+      "createdAt": "2026-06-17T16:14:32.273Z"
+    },
+    {
+      "id": "a48b73dd-b405-4567-8215-4d4177ae96d6",
+      "sessionId": "1c1c07d9-5a9a-4456-9caa-d99bb2f723f3",
+      "role": "assistant",
+      "content": "Got it! I have noted those details. To complete your report, could you please tell me your Phone number?",
+      "createdAt": "2026-06-17T16:14:40.994Z"
+    },
+    {
+      "id": "7bff4b05-3fed-4611-866b-9cac7f69177b",
+      "sessionId": "1c1c07d9-5a9a-4456-9caa-d99bb2f723f3",
+      "role": "user",
+      "content": "020929383",
+      "createdAt": "2026-06-17T16:14:47.963Z"
+    },
+    {
+      "id": "5a25f3b9-60b5-4a46-a2a7-022004c890e9",
+      "sessionId": "1c1c07d9-5a9a-4456-9caa-d99bb2f723f3",
+      "role": "assistant",
+      "content": "✅ I've logged your LOST report for your iphone.\n\nI searched all current found reports, but there's no match yet. I'll keep watching and let you know the moment one appears.\n\n✅ Got it — I've logged your **LOST** report for your **iphone**.\n\nI searched all current found reports, but no matching item has been found yet. I've safely logged your report and I'll keep watching and let you know the moment one appears.",
+      "createdAt": "2026-06-17T16:14:56.338Z"
+    },
+    {
+      "id": "2db4f835-17c2-442f-8a5e-9f41037c8c74",
+      "sessionId": "62606a6e-a450-4f0f-b901-0f5a16d19b81",
+      "role": "user",
+      "content": "i found a iphone pro max near library orange colour",
+      "createdAt": "2026-06-17T16:15:43.021Z"
+    },
+    {
+      "id": "19d80539-ed79-4438-a1c4-0d511512559c",
+      "sessionId": "62606a6e-a450-4f0f-b901-0f5a16d19b81",
+      "role": "assistant",
+      "content": "Got it! I have noted those details. To complete your report, could you please tell me your Phone number?",
+      "createdAt": "2026-06-17T16:15:51.632Z"
+    },
+    {
+      "id": "3361f7e7-bf2b-4196-a8b6-3d2f3d9900a7",
+      "sessionId": "62606a6e-a450-4f0f-b901-0f5a16d19b81",
+      "role": "user",
+      "content": "0987656789",
+      "createdAt": "2026-06-17T16:15:57.861Z"
+    },
+    {
+      "id": "426bab8f-8ee3-44e3-9ada-7bad3842a037",
+      "sessionId": "62606a6e-a450-4f0f-b901-0f5a16d19b81",
+      "role": "assistant",
+      "content": "✅ I've logged your FOUND report for your iphone.\n\nGreat news — I also found a possible match among our current lost reports.\n\n| Item | Location | Match Score | Contact Details | Why it matches |\n| --- | --- | --- | --- | --- |\n| iphone | library | 67% | Name: Anish Kumar, Phone: 020929383, Email: anish@student.edu | Highly similar item names. Some description overlap. Location overlap. Category matches. Color matches. Brand matches. |\n\nPlease review these carefully. I'll keep these matches connected while you confirm details.",
+      "createdAt": "2026-06-17T16:16:06.448Z"
+    },
+    {
+      "id": "146f00cb-7489-422e-9170-9d669ab2263f",
+      "sessionId": "917eb851-e0b1-4db0-9e2f-36a2b9914d2f",
+      "role": "user",
+      "content": "I want to report a found item",
+      "createdAt": "2026-06-17T19:21:43.970Z"
+    },
+    {
+      "id": "3c01fb67-1628-44ef-b7fe-8cf815a4bc82",
+      "sessionId": "917eb851-e0b1-4db0-9e2f-36a2b9914d2f",
+      "role": "assistant",
+      "content": "Thank you for letting us know! That's very kind of you to report a found item. We'll do our best to reunite it with its owner.\n\nCould you please tell me a little more about the item you found? What kind of item is it?",
+      "createdAt": "2026-06-17T19:21:46.483Z"
+    }
+  ],
+  "lostItems": [
+    {
+      "id": "mock-lost-pencil-1",
+      "itemName": "pencil",
+      "category": "Stationery",
+      "description": "Red Doms Pencil",
+      "location": "Gate",
+      "color": "red",
+      "brand": "doms",
+      "dents": null,
+      "hiddenDetails": null,
+      "date": "2026-06-17T09:00:00.000Z",
+      "type": "lost",
+      "privateAttributes": {},
+      "appearanceTags": [
+        "red",
+        "doms",
+        "pencil"
+      ],
+      "status": "RESOLVED",
+      "priority": "NORMAL",
+      "userId": "mock-user-1",
+      "userName": "Ansh",
+      "userPhone": "99002092929",
+      "studentId": "006",
+      "createdAt": "2026-06-17T09:00:00.000Z"
+    },
+    {
+      "status": "ACTIVE",
+      "category": "Other",
+      "priority": "NORMAL",
+      "privateAttributes": {},
+      "appearanceTags": [],
+      "color": null,
+      "brand": "lenovo",
+      "dents": null,
+      "hiddenDetails": null,
+      "description": "I lost my Lenovo charger near the Library. My name is Anish, ID 00994, phone 90303923",
+      "location": "Library",
+      "itemName": "charger",
+      "date": "",
+      "type": "lost",
+      "userId": "anonymous",
+      "studentId": "00994",
+      "userName": "Anish",
+      "userPhone": "90303923",
+      "id": "6c382552-6d73-4591-86c1-970f6b85c711",
+      "createdAt": "2026-06-17T09:25:39.472Z"
+    },
+    {
+      "status": "ACTIVE",
+      "category": "Other",
+      "priority": "NORMAL",
+      "privateAttributes": {},
+      "appearanceTags": [],
+      "color": "orange",
+      "brand": "iphone",
+      "dents": null,
+      "hiddenDetails": null,
+      "description": "i was iphone 17 pro max orange colour one and it was last remeber i kept on the sitting desk near library",
+      "location": "library",
+      "itemName": "iphone",
+      "date": "",
+      "type": "lost",
+      "userId": "ad3c4b41-5edd-45d8-a9e5-8ec54dc041e4",
+      "userName": "Anish Kumar",
+      "userEmail": "anish@student.edu",
+      "userPhone": "020929383",
+      "id": "db94b5a8-2461-4e77-8ded-37f76f4ba1af",
+      "createdAt": "2026-06-17T16:14:47.964Z"
+    }
+  ],
+  "foundItems": [
+    {
+      "id": "mock-found-charger-1",
+      "itemName": "charger",
+      "category": "Electronics",
+      "description": "Lenovo Laptop Charger",
+      "location": "Library",
+      "color": "black",
+      "brand": "lenovo",
+      "dents": null,
+      "hiddenDetails": "Sticker of a blue cat on the back",
+      "date": "2026-06-17T09:00:00.000Z",
+      "type": "found",
+      "privateAttributes": {
+        "verificationQuestion": "What sticker is on the back of the charger?",
+        "expectedAnswer": "blue cat"
+      },
+      "appearanceTags": [
+        "black",
+        "lenovo",
+        "charger"
+      ],
+      "status": "ACTIVE",
+      "priority": "NORMAL",
+      "userId": "mock-user-2",
+      "userName": "Anshg",
+      "userPhone": "909002293",
+      "studentId": "008",
+      "createdAt": "2026-06-17T09:00:00.000Z"
+    },
+    {
+      "status": "ACTIVE",
+      "category": "Other",
+      "priority": "NORMAL",
+      "privateAttributes": {},
+      "appearanceTags": [],
+      "color": "orange",
+      "brand": "iphone",
+      "dents": null,
+      "hiddenDetails": null,
+      "description": "i found a iphone pro max near library orange colour",
+      "location": "library orange colour",
+      "itemName": "iphone",
+      "date": "",
+      "type": "found",
+      "userId": "edc2d0a0-6b3e-40ca-97f7-e1749b85cf9c",
+      "userName": "Jane Doe",
+      "userEmail": "jane@student.edu",
+      "userPhone": "0987656789",
+      "id": "7eeea54e-26d0-4776-b43d-a7d397a3a9f3",
+      "createdAt": "2026-06-17T16:15:57.862Z"
+    }
+  ],
+  "matches": [],
+  "claims": [],
+  "verificationQuestions": [
+    {
+      "id": "vq-charger-1",
+      "foundItemId": "mock-found-charger-1",
+      "questions": [
+        "What sticker is on the back of the charger?"
+      ],
+      "createdAt": "2026-06-17T09:00:00.000Z"
+    }
+  ],
+  "analytics": [],
+  "agentLogs": []
+}

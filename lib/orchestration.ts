@@ -231,10 +231,11 @@ export function buildMatchMessage(
     `among our current ${opposite} reports:`;
 
   const tableHeader =
-    '| Item | Location | Match Score | Contact Details | Why it matches |\n' +
-    '| --- | --- | --- | --- | --- |';
+    '| Image | Item | Location | Match Score | Contact Details | Why it matches |\n' +
+    '| --- | --- | --- | --- | --- | --- |';
 
   const rows = matches.map(m => {
+    const imgStr = m.item?.imageUrl ? `![match](${m.item.imageUrl})` : 'No Image';
     const name = sanitizeCell(m.item?.itemName) || 'Unnamed item';
     const location = sanitizeCell(m.item?.location) || 'Not specified';
     const reasoning = sanitizeCell(m.reasoning) || 'Several details line up.';
@@ -244,7 +245,7 @@ export function buildMatchMessage(
       m.item?.userEmail ? `Email: ${m.item.userEmail}` : '',
     ].filter(Boolean).join(', ') || 'N/A';
     const contact = sanitizeCell(contactInfo);
-    return `| ${name} | ${location} | ${m.match_score}% | ${contact} | ${reasoning} |`;
+    return `| ${imgStr} | ${name} | ${location} | ${m.match_score}% | ${contact} | ${reasoning} |`;
   });
 
   const footer =

@@ -117,6 +117,13 @@ class Store {
   getChatSessionById(id: string) {
     return this.chatSessions.find(s => s.id === id);
   }
+  updateChatSessionImageUrl(id: string, imageUrl: string) {
+    const session = this.chatSessions.find(s => s.id === id);
+    if (session) {
+      session.imageUrl = imageUrl;
+      this.saveData();
+    }
+  }
 
   // --- Messages ---
   addMessage(msg: Message) {

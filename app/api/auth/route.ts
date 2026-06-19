@@ -20,6 +20,10 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Missing required Google profile fields' }, { status: 400 });
       }
 
+      if (!email.toLowerCase().endsWith('@dsce.edu.in')) {
+        return NextResponse.json({ error: 'Only @dsce.edu.in email addresses are allowed to register or login' }, { status: 403 });
+      }
+
       let user = store.getUserByEmail(email);
       if (!user) {
         const role = (email.endsWith('@admin.com') || email.toLowerCase().includes('admin')) ? 'admin' : 'student';
@@ -37,9 +41,6 @@ export async function POST(request: Request) {
       } else {
         if (picture && user.picture !== picture) {
           user.picture = picture;
-          // Trigger save by adding it again or we can let it save.
-          // Since it mutates the reference, we can call store.addUser(user) which will ignore duplicate push if we want,
-          // or just write a store method if we modify store.ts. Let's just mutate it, it will save.
         }
       }
 
@@ -54,6 +55,10 @@ export async function POST(request: Request) {
       
       if (!name || !email || !phone || !password) {
         return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+      }
+
+      if (!email.toLowerCase().endsWith('@dsce.edu.in')) {
+        return NextResponse.json({ error: 'Only @dsce.edu.in email addresses are allowed to register or login' }, { status: 403 });
       }
 
       // Check if user already exists
@@ -87,6 +92,10 @@ export async function POST(request: Request) {
 
       if (!email || !password) {
         return NextResponse.json({ error: 'Missing credentials' }, { status: 400 });
+      }
+
+      if (!email.toLowerCase().endsWith('@dsce.edu.in')) {
+        return NextResponse.json({ error: 'Only @dsce.edu.in email addresses are allowed to register or login' }, { status: 403 });
       }
 
       const user = store.getUserByEmail(email);

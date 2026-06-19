@@ -169,7 +169,7 @@ export function localExtract(userTexts: string[]): ExtractedReport {
   }
   if (report.user_phone) {
     cleanText = cleanText.replace(new RegExp(report.user_phone.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), '');
-    cleanText = cleanText.replace(/\b(?:phone(?:\s+number)?|contact(?:\s+number)?)\b/gi, '');
+    cleanText = cleanText.replace(/\b(?:phone\s+number|contact\s+number)\b/gi, '');
   }
   if (report.student_id) {
     cleanText = cleanText.replace(new RegExp(report.student_id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), '');

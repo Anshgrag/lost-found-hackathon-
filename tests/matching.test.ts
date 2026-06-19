@@ -238,4 +238,117 @@ describe("calculateMatchScore", () => {
     const res = calculateMatchScore(itemA, itemB);
     expect(res.match_score).toBeGreaterThanOrEqual(60);
   });
+
+  it("calculates visual similarity scores when both items contain an imageUrl", () => {
+    const itemA: Item = {
+      id: "a",
+      itemName: "Keys",
+      category: "Keys",
+      description: "Lost brass keys on keyring",
+      location: "Library",
+      color: "gold",
+      brand: null,
+      date: "2026-06-15T10:00:00.000Z",
+      type: "lost",
+      privateAttributes: {},
+      appearanceTags: [],
+      status: "ACTIVE",
+      priority: "NORMAL",
+      userId: "u1",
+      imageUrl: "/uploads/keys_a.png",
+      createdAt: "2026-06-15T10:00:00.000Z",
+    };
+
+    const itemB: Item = {
+      id: "b",
+      itemName: "Keys",
+      category: "Keys",
+      description: "Found keys on keyring",
+      location: "Library",
+      color: "gold",
+      brand: null,
+      date: "2026-06-15T10:00:00.000Z",
+      type: "found",
+      privateAttributes: {},
+      appearanceTags: [],
+      status: "ACTIVE",
+      priority: "NORMAL",
+      userId: "u2",
+      imageUrl: "/uploads/keys_b.png",
+      createdAt: "2026-06-15T10:00:00.000Z",
+    };
+
+    const resImageMatch = calculateMatchScore(itemA, itemB);
+    
+    // Copy without image
+    const { imageUrl: _, ...itemAWithoutImage } = itemA;
+    const { imageUrl: __, ...itemBWithoutImage } = itemB;
+    const resTextOnly = calculateMatchScore(itemAWithoutImage, itemBWithoutImage as Item);
+
+    expect(resImageMatch.match_score).toBeDefined();
+    expect(resImageMatch.reasoning).toContain("Visual features");
+    expect(resImageMatch.match_score).not.toEqual(resTextOnly.match_score);
+  });
+
+  it("applies brand mismatch penalty when brands do not match", () => {
+    const itemA: Partial<Item> = {
+      itemName: "Redmi Note 9",
+      category: "Electronics",
+      brand: "Redmi",
+      type: "lost"
+    };
+    const itemB: Item = {
+      id: "b",
+      itemName: "iPhone 13",
+      category: "Electronics",
+      description: "",
+      location: "",
+      color: null,
+      brand: "Apple",
+      date: new Date().toISOString(),
+      type: "found",
+      privateAttributes: {},
+      appearanceTags: [],
+      status: "ACTIVE",
+      priority: "NORMAL",
+      userId: "u",
+      createdAt: new Date().toISOString()
+    };
+
+    const res = calculateMatchScore(itemA, itemB);
+    expect(res.reasoning).toContain("Brand mismatch detected");
+    // Since brand is mismatch, score should be penalized heavily
+    expect(res.match_score).toBeLessThan(MIN_REPORTABLE_SCORE);
+  });
+
+  it("uses precomputed visual score if provided", () => {
+    const itemA: Partial<Item> = {
+      itemName: "Keys",
+      category: "Keys",
+      imageUrl: "/uploads/keys_a.png",
+      type: "lost"
+    };
+    const itemB: Item = {
+      id: "b",
+      itemName: "Keys",
+      category: "Keys",
+      description: "",
+      location: "",
+      color: null,
+      brand: null,
+      date: new Date().toISOString(),
+      type: "found",
+      privateAttributes: {},
+      appearanceTags: [],
+      status: "ACTIVE",
+      priority: "NORMAL",
+      userId: "u",
+      imageUrl: "/uploads/keys_b.png",
+      createdAt: new Date().toISOString()
+    };
+
+    const res = calculateMatchScore(itemA, itemB, 85, "Exact color matches");
+    expect(res.reasoning).toContain("Visual Verification Agent confirms 85% visual similarity");
+    expect(res.reasoning).toContain("Exact color matches");
+  });
 });

@@ -230,4 +230,124 @@ describe('Chat API Route', () => {
     expect(content).toContain('Student ID or Email');
     expect(content).not.toContain("what the item is"); // because itemName was charger
   });
+
+  it('persists session imageUrl even when report is completed in a later message', async () => {
+    const sessionId = 'test-session-persistent-image';
+    store.addChatSession({
+      id: sessionId,
+      userId: 'mock-user-1',
+      title: 'Active Session',
+      status: 'ACTIVE',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    });
+
+    // Mock Gemini API successful reply
+    (globalThis.fetch as any).mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        candidates: [{ content: { parts: [{ text: 'Logged it' }], role: 'model' } }]
+      })
+    });
+
+    // Send first message with imageUrl but incomplete details
+    const req1 = new Request('http://localhost/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: [{ role: 'user', content: 'I lost a phone.' }],
+        sessionId,
+        imageUrl: '/uploads/persistent-image.jpeg'
+      })
+    });
+    await POST(req1);
+
+    // Assert imageUrl is stored in session
+    const session = store.getChatSessionById(sessionId);
+    expect(session?.imageUrl).toBe('/uploads/persistent-image.jpeg');
+
+    // Send second message completing the details, without imageUrl in body
+    const req2 = new Request('http://localhost/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: [
+          { role: 'user', content: 'I lost a phone.' },
+          { role: 'user', content: 'My name is Anish, ID 00994, phone number 90303923, color is orange.' }
+        ],
+        sessionId
+      })
+    });
+
+    const res = await POST(req2);
+    expect(res.status).toBe(200);
+
+    const resData = await res.json();
+    expect(resData.meta.reportLogged).toBe(true);
+
+    const loggedItem = store.findItemById(resData.meta.itemId);
+    expect(loggedItem?.imageUrl).toBe('/uploads/persistent-image.jpeg');
+  });
+
+  it('uses visual extraction details to complete report without asking user for them', async () => {
+    const sessionId = 'test-session-visual-extract';
+    store.addChatSession({
+      id: sessionId,
+      userId: 'mock-user-1',
+      title: 'Active Session',
+      status: 'ACTIVE',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    });
+
+    // Mock Gemini API successful reply
+    (globalThis.fetch as any).mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        candidates: [{
+          content: {
+            parts: [{ text: 'Logged it' }],
+            role: 'model'
+          }
+        }]
+      })
+    });
+
+    const visualAgent = await import('@/lib/visualAgent');
+    const mockExtract = vi.spyOn(visualAgent, 'runVisualExtraction').mockResolvedValue({
+      item_name: 'backpack',
+      item_category: 'Accessories',
+      color: 'blue',
+      brand: 'Nike',
+      distinctive_features: 'Sports backpack with blue straps'
+    });
+
+    // Send a message containing only name/contact details and imageUrl
+    // The visual extraction should automatically extract 'backpack', 'Accessories', 'blue', 'Nike'
+    // Making the report complete in just one step!
+    const req = new Request('http://localhost/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: [{ role: 'user', content: 'I found this. My name is Anish, ID 00994, phone number 90303923.' }],
+        sessionId,
+        imageUrl: '/uploads/blue_backpack.jpeg'
+      })
+    });
+
+    const res = await POST(req);
+    expect(res.status).toBe(200);
+
+    const resData = await res.json();
+    expect(resData.meta.reportLogged).toBe(true);
+
+    const loggedItem = store.findItemById(resData.meta.itemId);
+    expect(loggedItem?.itemName).toBe('backpack');
+    expect(loggedItem?.category).toBe('Accessories');
+    expect(loggedItem?.color).toBe('blue');
+    expect(loggedItem?.brand).toBe('Nike');
+    expect(loggedItem?.imageUrl).toBe('/uploads/blue_backpack.jpeg');
+
+    mockExtract.mockRestore();
+  });
 });

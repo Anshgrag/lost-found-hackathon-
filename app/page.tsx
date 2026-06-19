@@ -27,7 +27,9 @@ import {
   Activity,
   Cpu,
   Terminal,
-  Grid
+  Grid,
+  Paperclip,
+  Image as ImageIcon
 } from 'lucide-react';
 import MapView from '@/components/MapView';
 
@@ -50,6 +52,7 @@ interface Item {
   userPhone?: string;
   userEmail?: string;
   studentId?: string;
+  imageUrl?: string;
   createdAt: string;
 }
 
@@ -57,12 +60,14 @@ interface ChatSession {
   id: string;
   title: string;
   status: 'ACTIVE' | 'ARCHIVED';
+  imageUrl?: string;
   createdAt: string;
 }
 
 interface Message {
   role: 'user' | 'assistant';
   content: string;
+  imageUrl?: string;
 }
 
 interface Claim {
@@ -105,6 +110,12 @@ export default function AppDashboard() {
   const [claims, setClaims] = useState<Claim[]>([]);
   const [usersList, setUsersList] = useState<User[]>([]);
 
+  // Image Upload state
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [filePreview, setFilePreview] = useState<string | null>(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   // Assistant state
   const [chatSessions, setChatSessions] = useState<ChatSession[]>([]);
   const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
@@ -130,9 +141,9 @@ export default function AppDashboard() {
 
   // Pre-configured Google Mock Accounts
   const mockGoogleAccounts = [
-    { name: 'Anish Kumar', email: 'anish@student.edu', picture: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150&q=80' },
-    { name: 'Jane Doe', email: 'jane@student.edu', picture: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&h=150&q=80' },
-    { name: 'Admin Staff', email: 'admin@admin.com', picture: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&h=150&q=80' }
+    { name: 'Anish Kumar', email: 'anish@dsce.edu.in', picture: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150&q=80' },
+    { name: 'Jane Doe', email: 'jane@dsce.edu.in', picture: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&h=150&q=80' },
+    { name: 'Admin Staff', email: 'admin@dsce.edu.in', picture: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&h=150&q=80' }
   ];
 
   // Log helper
@@ -402,15 +413,58 @@ export default function AppDashboard() {
     setActiveTab('landing');
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFilePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+      logEvent('UploadService', `Staged photo attachment: ${file.name}`);
+    }
+  };
+
   // Conversational Assistant message send
   const sendChatMessage = async () => {
-    if (!chatInput.trim() || !activeSessionId) return;
+    if ((!chatInput.trim() && !selectedFile) || !activeSessionId) return;
 
-    const newMsgs = [...chatMessages, { role: 'user' as const, content: chatInput }];
-    setChatMessages(newMsgs);
-    const userQuery = chatInput;
-    setChatInput('');
+    let uploadedUrl: string | undefined = undefined;
     setChatLoading(true);
+
+    if (selectedFile) {
+      setUploadingImage(true);
+      logEvent('UploadService', `Uploading file: ${selectedFile.name}...`);
+      try {
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        const uploadRes = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        if (uploadRes.ok) {
+          const uploadData = await uploadRes.json();
+          uploadedUrl = uploadData.imageUrl;
+          logEvent('UploadService', `File uploaded successfully: ${uploadedUrl}`);
+        } else {
+          logEvent('UploadService', `File upload failed.`);
+        }
+      } catch (err) {
+        console.error('Upload error:', err);
+        logEvent('UploadService', `File upload encountered an error.`);
+      } finally {
+        setUploadingImage(false);
+      }
+    }
+
+    const messageContent = chatInput.trim() || (selectedFile ? `[Attached Image: ${selectedFile.name}]` : '');
+    const newMsgs = [...chatMessages, { role: 'user' as const, content: messageContent, imageUrl: uploadedUrl }];
+    setChatMessages(newMsgs);
+    const userQuery = messageContent;
+    setChatInput('');
+    setSelectedFile(null);
+    setFilePreview(null);
     logEvent('IntakeAgent', `Processing user parameters: "${userQuery}"`);
 
     try {
@@ -423,6 +477,7 @@ export default function AppDashboard() {
         body: JSON.stringify({
           messages: newMsgs,
           sessionId: activeSessionId,
+          imageUrl: uploadedUrl,
         }),
       });
       const data = await res.json();
@@ -804,6 +859,11 @@ export default function AppDashboard() {
                               ? 'bg-zinc-900/40 border border-white/[0.03] text-zinc-200'
                               : 'bg-white text-black font-semibold'
                           }`}>
+                            {!isBot && msg.imageUrl && (
+                              <div className="mb-3 rounded-2xl overflow-hidden border border-black/10 max-w-[200px] bg-zinc-100/5">
+                                <img src={msg.imageUrl} alt="Attached upload" className="w-full h-auto object-cover max-h-[150px]" />
+                              </div>
+                            )}
                             {isBot ? (
                               <div className="prose prose-invert max-w-none">
                                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
@@ -835,8 +895,33 @@ export default function AppDashboard() {
                 </div>
 
                 {/* Input Control */}
-                <div className="mt-8 pt-6 border-t border-white/[0.03]">
+                <div className="mt-8 pt-6 border-t border-white/[0.03] space-y-4">
+                  {/* File Attachment Preview */}
+                  {filePreview && (
+                    <div className="relative inline-block bg-zinc-900 border border-white/[0.05] p-2 rounded-2xl animate-fade-in-up">
+                      <img src={filePreview} alt="Upload preview" className="w-16 h-16 rounded-xl object-cover" />
+                      <button
+                        onClick={() => {
+                          setSelectedFile(null);
+                          setFilePreview(null);
+                        }}
+                        className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-zinc-800 hover:bg-zinc-750 text-white rounded-full flex items-center justify-center text-[10px] border border-white/[0.05] cursor-pointer"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  )}
+
                   <div className="relative flex items-center">
+                    {/* Hidden File Input */}
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleFileChange}
+                      accept="image/*"
+                      className="hidden"
+                    />
+
                     <input
                       type="text"
                       value={chatInput}
@@ -844,15 +929,27 @@ export default function AppDashboard() {
                       onKeyDown={(e) => e.key === 'Enter' && sendChatMessage()}
                       placeholder={activeSessionId ? "Describe the item..." : "Initialize session..."}
                       disabled={chatLoading || !activeSessionId}
-                      className="w-full bg-zinc-900/50 border border-white/[0.05] focus:border-white/20 focus:outline-none rounded-2xl px-6 py-4 text-[14px] text-white placeholder-zinc-700 disabled:opacity-50 transition-all"
+                      className="w-full bg-zinc-900/50 border border-white/[0.05] focus:border-white/20 focus:outline-none rounded-2xl pl-6 pr-28 py-4 text-[14px] text-white placeholder-zinc-700 disabled:opacity-50 transition-all"
                     />
-                    <button
-                      onClick={sendChatMessage}
-                      disabled={chatLoading || !chatInput.trim() || !activeSessionId}
-                      className="absolute right-3 p-2 bg-white hover:scale-105 disabled:bg-zinc-800 disabled:scale-100 text-black rounded-xl transition-all cursor-pointer"
-                    >
-                      <Send className="w-4 h-4" />
-                    </button>
+
+                    <div className="absolute right-3 flex items-center gap-2">
+                      <button
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={chatLoading || !activeSessionId}
+                        type="button"
+                        className="p-2 bg-zinc-850 hover:bg-zinc-800 text-zinc-400 hover:text-white rounded-xl transition-all cursor-pointer disabled:opacity-50"
+                        title="Attach Photo"
+                      >
+                        <Paperclip className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={sendChatMessage}
+                        disabled={chatLoading || (!chatInput.trim() && !selectedFile) || !activeSessionId}
+                        className="p-2 bg-white hover:scale-105 disabled:bg-zinc-800 disabled:scale-100 text-black rounded-xl transition-all cursor-pointer"
+                      >
+                        <Send className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -931,20 +1028,44 @@ export default function AppDashboard() {
                           {report.status}
                         </span>
                       </div>
-
-                      <p className="text-sm text-zinc-400 leading-relaxed max-w-2xl">{report.description}</p>
+                      <div className="flex flex-col sm:flex-row gap-6">
+                        {report.imageUrl && (
+                          <div className="w-24 h-24 rounded-2xl overflow-hidden border border-white/[0.05] flex-shrink-0 bg-zinc-900/50 flex items-center justify-center">
+                            <img src={report.imageUrl} alt={report.itemName} className="w-full h-full object-cover" />
+                          </div>
+                        )}
+                        <div className="flex-1 space-y-3">
+                          <p className="text-sm text-zinc-400 leading-relaxed max-w-2xl">{report.description}</p>
+                        </div>
+                      </div>
 
                       {/* Matching Results */}
                       {report.status !== 'RESOLVED' && matches.length > 0 && (
                         <div className="pt-6 animate-fade-in-up stagger-1">
-                          <div className="p-8 rounded-3xl bg-zinc-900/30 border border-white/[0.05] flex items-center justify-between group-hover:border-white/10 transition-all">
-                            <div className="space-y-2">
-                              <div className="flex items-center gap-3">
-                                <span className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></span>
-                                <h5 className="font-bold text-sm text-white">{matches[0].item.itemName}</h5>
-                                <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{matches[0].score}% MATCH</span>
+                          <div className="p-8 rounded-3xl bg-zinc-900/30 border border-white/[0.05] flex items-center justify-between group-hover:border-white/10 transition-all gap-4">
+                            <div className="flex gap-4 items-center">
+                              <div className="flex gap-2.5 items-center flex-shrink-0">
+                                {report.imageUrl && (
+                                  <div className="relative">
+                                    <img src={report.imageUrl} alt="Your report" className="w-14 h-14 rounded-2xl object-cover border border-white/[0.05] bg-zinc-950" />
+                                    <span className="absolute -top-1.5 -left-1.5 px-1.5 py-0.5 bg-blue-600 text-white rounded text-[8px] font-bold uppercase tracking-wider scale-75 select-none">Yours</span>
+                                  </div>
+                                )}
+                                {matches[0].item.imageUrl && (
+                                  <div className="relative">
+                                    <img src={matches[0].item.imageUrl} alt="Matched item" className="w-14 h-14 rounded-2xl object-cover border border-white/[0.05] bg-zinc-950" />
+                                    <span className="absolute -top-1.5 -right-1.5 px-1.5 py-0.5 bg-emerald-600 text-white rounded text-[8px] font-bold uppercase tracking-wider scale-75 select-none">Match</span>
+                                  </div>
+                                )}
                               </div>
-                              <p className="text-xs text-zinc-500 font-medium">{matches[0].item.description}</p>
+                              <div className="space-y-1">
+                                <div className="flex items-center gap-3">
+                                  <span className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></span>
+                                  <h5 className="font-bold text-sm text-white">{matches[0].item.itemName}</h5>
+                                  <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{matches[0].score}% MATCH</span>
+                                </div>
+                                <p className="text-xs text-zinc-550 font-medium">{matches[0].item.description}</p>
+                              </div>
                             </div>
                             <button
                               onClick={() => startVerification(report, matches[0].item)}
@@ -1078,6 +1199,38 @@ export default function AppDashboard() {
                       Abort
                     </button>
                   </div>
+
+                  {/* Visual Reference Check */}
+                  {(selectedLostItem?.imageUrl || selectedFoundItem?.imageUrl) && (
+                    <div className="p-8 rounded-3xl bg-zinc-900/30 border border-white/[0.05] space-y-6">
+                      <h4 className="text-[10px] font-bold text-zinc-550 uppercase tracking-[0.2em]">Visual Reference Check</h4>
+                      <div className="flex gap-8 justify-center items-center">
+                        {selectedLostItem?.imageUrl && (
+                          <div className="space-y-2 text-center flex-1 max-w-[200px]">
+                            <div className="relative aspect-square rounded-2xl overflow-hidden border border-white/[0.05] bg-zinc-950 flex items-center justify-center">
+                              <img src={selectedLostItem.imageUrl} alt="Lost report reference" className="w-full h-full object-cover" />
+                              <span className="absolute bottom-2 left-2 px-2 py-0.5 bg-blue-600/90 text-white rounded text-[8px] font-bold uppercase tracking-wider select-none">Your Lost Item</span>
+                            </div>
+                            <p className="text-[10px] text-zinc-500 truncate">{selectedLostItem.itemName}</p>
+                          </div>
+                        )}
+                        
+                        {(selectedLostItem?.imageUrl && selectedFoundItem?.imageUrl) && (
+                          <div className="text-zinc-700 font-bold text-xs uppercase tracking-widest px-2 select-none">vs</div>
+                        )}
+
+                        {selectedFoundItem?.imageUrl && (
+                          <div className="space-y-2 text-center flex-1 max-w-[200px]">
+                            <div className="relative aspect-square rounded-2xl overflow-hidden border border-white/[0.05] bg-zinc-950 flex items-center justify-center">
+                              <img src={selectedFoundItem.imageUrl} alt="Found item reference" className="w-full h-full object-cover" />
+                              <span className="absolute bottom-2 left-2 px-2 py-0.5 bg-emerald-600/90 text-white rounded text-[8px] font-bold uppercase tracking-wider select-none">Found Match</span>
+                            </div>
+                            <p className="text-[10px] text-zinc-500 truncate">{selectedFoundItem.itemName}</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
 
                   {verificationLoading ? (
                     <div className="py-32 flex flex-col items-center justify-center gap-6">
@@ -1298,6 +1451,24 @@ export default function AppDashboard() {
                             <p className="text-[10px] text-zinc-500">
                               Claimant: {lostItem?.userName || 'Unknown User'} • Match Score: <span className="text-blue-400 font-bold">{claim.confidenceScore}%</span> • Recommendation: <span className="uppercase text-amber-400 font-semibold">{claim.evaluatorDecision}</span>
                             </p>
+                            
+                            {/* Images Comparison */}
+                            {(lostItem?.imageUrl || foundItem?.imageUrl) && (
+                              <div className="flex gap-2.5 items-center mt-2.5">
+                                {lostItem?.imageUrl && (
+                                  <div className="relative">
+                                    <img src={lostItem.imageUrl} alt="Lost Reference" className="w-12 h-12 rounded-xl object-cover border border-white/[0.05] bg-zinc-950" />
+                                    <span className="absolute bottom-0.5 left-0.5 px-1 bg-blue-600/90 text-white rounded-[3px] text-[6px] font-bold uppercase tracking-wider scale-75 select-none">Lost</span>
+                                  </div>
+                                )}
+                                {foundItem?.imageUrl && (
+                                  <div className="relative">
+                                    <img src={foundItem.imageUrl} alt="Found Reference" className="w-12 h-12 rounded-xl object-cover border border-white/[0.05] bg-zinc-950" />
+                                    <span className="absolute bottom-0.5 right-0.5 px-1 bg-emerald-600/90 text-white rounded-[3px] text-[6px] font-bold uppercase tracking-wider scale-75 select-none">Found</span>
+                                  </div>
+                                )}
+                              </div>
+                            )}
                             
                             {/* Display answers */}
                             <div className="bg-zinc-950/40 border border-zinc-900 p-2.5 rounded-lg text-[10px] max-w-lg mt-2 space-y-1 text-zinc-400">

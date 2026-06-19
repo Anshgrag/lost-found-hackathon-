@@ -46,6 +46,26 @@
       "role": "student",
       "picture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&h=150&q=80",
       "createdAt": "2026-06-17T16:13:18.699Z"
+    },
+    {
+      "id": "2bf7827f-5201-4007-9531-aee4356ea32b",
+      "name": "Admin Staff",
+      "email": "admin@admin.com",
+      "phone": "",
+      "studentId": "",
+      "role": "admin",
+      "picture": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&h=150&q=80",
+      "createdAt": "2026-06-18T08:31:32.753Z"
+    },
+    {
+      "id": "ac233ac6-ca02-4535-83b8-e2b9c651e1e9",
+      "name": "Jane Doe",
+      "email": "jane@dsce.edu.in",
+      "phone": "",
+      "studentId": "",
+      "role": "student",
+      "picture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&h=150&q=80",
+      "createdAt": "2026-06-18T19:13:23.402Z"
     }
   ],
   "chatSessions": [
@@ -72,6 +92,33 @@
       "status": "ACTIVE",
       "createdAt": "2026-06-17T19:21:43.809Z",
       "updatedAt": "2026-06-17T19:21:43.809Z"
+    },
+    {
+      "id": "13b2a9bd-6fc9-4f25-9488-bacf037fe621",
+      "userId": "2bf7827f-5201-4007-9531-aee4356ea32b",
+      "title": "I want to report a lost i...",
+      "status": "ACTIVE",
+      "createdAt": "2026-06-18T08:31:32.789Z",
+      "updatedAt": "2026-06-18T08:31:32.789Z",
+      "imageUrl": "/uploads/63721cad-5ba3-4b89-a866-d8762205e76a.jpeg"
+    },
+    {
+      "id": "fa6281cb-8297-4253-80bd-667f7a9558f0",
+      "userId": "edc2d0a0-6b3e-40ca-97f7-e1749b85cf9c",
+      "title": "I want to report a found ...",
+      "status": "ACTIVE",
+      "createdAt": "2026-06-18T10:14:48.349Z",
+      "updatedAt": "2026-06-18T10:14:48.349Z",
+      "imageUrl": "/uploads/eb3ab9b3-2019-44b7-b0a8-b2db1e87b6d0.jpeg"
+    },
+    {
+      "id": "35a70e5d-75d0-4d75-9459-7e1e691ddec3",
+      "userId": "ac233ac6-ca02-4535-83b8-e2b9c651e1e9",
+      "title": "I want to report a found ...",
+      "status": "ACTIVE",
+      "createdAt": "2026-06-18T19:13:23.443Z",
+      "updatedAt": "2026-06-18T19:13:23.443Z",
+      "imageUrl": "/uploads/456818bd-8048-4f49-833f-9ea536a7e0a3.jpeg"
     }
   ],
   "messages": [
@@ -172,6 +219,174 @@
       "role": "assistant",
       "content": "Thank you for letting us know! That's very kind of you to report a found item. We'll do our best to reunite it with its owner.\n\nCould you please tell me a little more about the item you found? What kind of item is it?",
       "createdAt": "2026-06-17T19:21:46.483Z"
+    },
+    {
+      "id": "bfa6fea1-c4bd-48cc-ba13-c3b5d671aaf8",
+      "sessionId": "62606a6e-a450-4f0f-b901-0f5a16d19b81",
+      "role": "user",
+      "content": "i want to register a new report i lost my redmi note 9 phone i am attaching a photo also",
+      "createdAt": "2026-06-18T08:27:45.012Z"
+    },
+    {
+      "id": "b3ee6b49-3d97-4190-92f0-5fd16bb50e6d",
+      "sessionId": "62606a6e-a450-4f0f-b901-0f5a16d19b81",
+      "role": "assistant",
+      "content": "Oh no, I'm so sorry to hear you've lost your Redmi Note 9 phone. That sounds really distressing, and I understand how important your phone is.\n\nThank you for letting me know you're attaching a photo – while I can't view images directly, the description you provide will be incredibly helpful.\n\nTo help me log this lost item report for your Redmi Note 9, could you please tell me your full name and your student ID (or email address if you don't have your student ID handy)? This will allow us to formally register the report and connect you if your phone is found.\n\n✅ Got it — I've logged your **FOUND** report for your **iphone**.\n\nGreat news — I also found a possible match among our current lost reports:\n\n| Item | Location | Match Score | Contact Details | Why it matches |\n| --- | --- | --- | --- | --- |\n| iphone | library | 64% | Name: Anish Kumar, Phone: 020929383, Email: anish@student.edu | Highly similar item names. Some description overlap. Location overlap. Category matches. Color matches. Brand matches. |\n\nPlease review these carefully. I've safely logged your report, so we'll keep these matches connected while you confirm the details.",
+      "createdAt": "2026-06-18T08:27:48.194Z"
+    },
+    {
+      "id": "955a0ac8-773f-42d5-ae1c-afd9cb5a979a",
+      "sessionId": "13b2a9bd-6fc9-4f25-9488-bacf037fe621",
+      "role": "user",
+      "content": "I want to report a lost item",
+      "createdAt": "2026-06-18T08:31:32.808Z"
+    },
+    {
+      "id": "ca26286f-57e2-4bac-b199-33d2cf2eba33",
+      "sessionId": "13b2a9bd-6fc9-4f25-9488-bacf037fe621",
+      "role": "assistant",
+      "content": "I'm so sorry to hear that! Losing something can be really stressful, but we'll work together to try and get it back. 💙\n\nCould you tell me what you lost?",
+      "createdAt": "2026-06-18T08:31:34.827Z"
+    },
+    {
+      "id": "0323ec20-178b-4a27-84bb-ff266f7427b8",
+      "sessionId": "13b2a9bd-6fc9-4f25-9488-bacf037fe621",
+      "role": "user",
+      "content": "redmi note 9 phone",
+      "createdAt": "2026-06-18T08:31:57.869Z"
+    },
+    {
+      "id": "8860fb5d-16ee-45f0-8807-160888254a7a",
+      "sessionId": "13b2a9bd-6fc9-4f25-9488-bacf037fe621",
+      "role": "assistant",
+      "content": "Got it! I have noted those details. To complete your report, could you please tell me your Phone number?",
+      "createdAt": "2026-06-18T08:32:06.424Z"
+    },
+    {
+      "id": "29671044-88ac-4468-b51e-7b84256b437c",
+      "sessionId": "13b2a9bd-6fc9-4f25-9488-bacf037fe621",
+      "role": "user",
+      "content": "945509090",
+      "createdAt": "2026-06-18T08:32:33.675Z"
+    },
+    {
+      "id": "6406497f-ede6-4b66-a7c5-908726544bcf",
+      "sessionId": "13b2a9bd-6fc9-4f25-9488-bacf037fe621",
+      "role": "assistant",
+      "content": "✅ I've logged your LOST report for your redmi.\n\nI searched all current found reports, but there's no match yet. I'll keep watching and let you know the moment one appears.\n\n✅ Got it — I've logged your **LOST** report for your **redmi**.\n\nI searched all current found reports, but no matching item has been found yet. I've safely logged your report and I'll keep watching and let you know the moment one appears.",
+      "createdAt": "2026-06-18T08:32:42.398Z"
+    },
+    {
+      "id": "0da708d7-21ac-4b35-ac67-3d8fd7ea197f",
+      "sessionId": "13b2a9bd-6fc9-4f25-9488-bacf037fe621",
+      "role": "user",
+      "content": "here is the image",
+      "createdAt": "2026-06-18T08:33:05.302Z"
+    },
+    {
+      "id": "36b4b081-ec2f-4fec-bba0-6ade8baa966a",
+      "sessionId": "13b2a9bd-6fc9-4f25-9488-bacf037fe621",
+      "role": "assistant",
+      "content": "✅ I've logged your LOST report for your redmi.\n\nI searched all current found reports, but there's no match yet. I'll keep watching and let you know the moment one appears.\n\n✅ Got it — I've logged your **LOST** report for your **redmi**.\n\nI searched all current found reports, but no matching item has been found yet. I've safely logged your report and I'll keep watching and let you know the moment one appears.",
+      "createdAt": "2026-06-18T08:33:14.003Z"
+    },
+    {
+      "id": "c04abba1-c828-43ba-a2b5-5cc630b29438",
+      "sessionId": "13b2a9bd-6fc9-4f25-9488-bacf037fe621",
+      "role": "user",
+      "content": "this is the phone image",
+      "createdAt": "2026-06-18T08:45:41.589Z"
+    },
+    {
+      "id": "38b9c4b9-aa37-433a-a278-dec9a137650b",
+      "sessionId": "13b2a9bd-6fc9-4f25-9488-bacf037fe621",
+      "role": "assistant",
+      "content": "✅ I've logged your LOST report for your phone.\n\nGreat news — I also found 2 possible matches among our current found reports.\n\n| Item | Location | Match Score | Contact Details | Why it matches |\n| --- | --- | --- | --- | --- |\n| iphone | library orange colour\n\ni want t | 57% | Name: attaching a photo, Phone: 0987656789, Email: jane@student.edu | Highly similar item names. Some description overlap. Category matches. Visual features correlate by 72% via scanning. |\n| iphone | library orange colour | 51% | Name: Jane Doe, Phone: 0987656789, Email: jane@student.edu | Highly similar item names. Some description overlap. Category matches. |\n\nPlease review these carefully. I'll keep these matches connected while you confirm details.",
+      "createdAt": "2026-06-18T08:45:50.525Z"
+    },
+    {
+      "id": "a25ead6f-33a1-401d-9eee-d0806c05961d",
+      "sessionId": "fa6281cb-8297-4253-80bd-667f7a9558f0",
+      "role": "user",
+      "content": "I want to report a found item",
+      "createdAt": "2026-06-18T10:14:48.393Z"
+    },
+    {
+      "id": "cc9ab2c6-86f5-4692-9d1b-84992a7c3d0e",
+      "sessionId": "fa6281cb-8297-4253-80bd-667f7a9558f0",
+      "role": "assistant",
+      "content": "Thank you for being so thoughtful! Taking the time to report a found item really helps our campus community. 💙\n\nCould you tell me what item you found?",
+      "createdAt": "2026-06-18T10:14:50.981Z"
+    },
+    {
+      "id": "5c282545-e625-4c24-9410-3f4637dd0dab",
+      "sessionId": "fa6281cb-8297-4253-80bd-667f7a9558f0",
+      "role": "user",
+      "content": "i found this phone",
+      "createdAt": "2026-06-18T10:15:20.969Z"
+    },
+    {
+      "id": "d30fce5f-7167-4751-94d9-012bbfa98c93",
+      "sessionId": "fa6281cb-8297-4253-80bd-667f7a9558f0",
+      "role": "assistant",
+      "content": "Got it! I have noted those details. To complete your report, could you please tell me your Phone number?",
+      "createdAt": "2026-06-18T10:15:29.500Z"
+    },
+    {
+      "id": "492bfb1e-d332-4d00-9735-7aea1e23ca75",
+      "sessionId": "fa6281cb-8297-4253-80bd-667f7a9558f0",
+      "role": "user",
+      "content": "02934802938",
+      "createdAt": "2026-06-18T10:15:38.843Z"
+    },
+    {
+      "id": "fbad5b69-6832-4808-b888-52cf1566abbe",
+      "sessionId": "fa6281cb-8297-4253-80bd-667f7a9558f0",
+      "role": "assistant",
+      "content": "✅ I've logged your FOUND report for your phone.\n\nGreat news — I also found 2 possible matches among our current lost reports.\n\n| Item | Location | Match Score | Contact Details | Why it matches |\n| --- | --- | --- | --- | --- |\n| phone | Not specified | 71% | Name: Admin Staff, Phone: 945509090, Email: admin@admin.com | Highly similar item names. Descriptions match almost identically. Category matches. Visual features correlate by 88% via scanning. |\n| iphone | library | 50% | Name: Anish Kumar, Phone: 020929383, Email: anish@student.edu | Highly similar item names. Category matches. |\n\nPlease review these carefully. I'll keep these matches connected while you confirm details.",
+      "createdAt": "2026-06-18T10:15:48.020Z"
+    },
+    {
+      "id": "32f3b3c5-3e4e-439d-8d38-29d5d00eba3c",
+      "sessionId": "35a70e5d-75d0-4d75-9459-7e1e691ddec3",
+      "role": "user",
+      "content": "I want to report a found item",
+      "createdAt": "2026-06-18T19:13:23.455Z"
+    },
+    {
+      "id": "66b7fb76-5749-4381-b783-5d87e347708d",
+      "sessionId": "35a70e5d-75d0-4d75-9459-7e1e691ddec3",
+      "role": "assistant",
+      "content": "That's wonderful — thank you for taking the time to help someone get their item back! 😊\n\nCould you tell me what you found? Just a short description is fine to start.",
+      "createdAt": "2026-06-18T19:13:28.290Z"
+    },
+    {
+      "id": "d06c9002-0f82-4132-9b7b-4f5cb6f33335",
+      "sessionId": "35a70e5d-75d0-4d75-9459-7e1e691ddec3",
+      "role": "user",
+      "content": "i found this phone",
+      "createdAt": "2026-06-18T19:13:41.731Z"
+    },
+    {
+      "id": "291c3ca1-54e0-418b-956d-ef65be4573a4",
+      "sessionId": "35a70e5d-75d0-4d75-9459-7e1e691ddec3",
+      "role": "assistant",
+      "content": "Thank you for reporting a found phone! Let's get it back to its owner together. 📱\n\nCould you tell me a little more about it? For example:\n- What color is it?\n- Do you see a brand or model (like iPhone, Samsung, etc.)?\n- Does it have a case? If so, what kind?\n\nAny little detail helps us match it with the right person.",
+      "createdAt": "2026-06-18T19:13:43.985Z"
+    },
+    {
+      "id": "3dbae265-ffba-4b65-9e6f-3aee596d8e30",
+      "sessionId": "35a70e5d-75d0-4d75-9459-7e1e691ddec3",
+      "role": "user",
+      "content": "you can see that from the image i uploaded andh 9928390293 is my number",
+      "createdAt": "2026-06-18T19:14:15.047Z"
+    },
+    {
+      "id": "efd4cab0-74ee-4046-8443-9413f99d9ab7",
+      "sessionId": "35a70e5d-75d0-4d75-9459-7e1e691ddec3",
+      "role": "assistant",
+      "content": "Thank you for sharing your number! I appreciate it. 🙏\n\nJust so you know, I'll need a couple more pieces of information to safely log your report:\n- **Your full name**\n- **Your student ID** (or email address if you don't have your ID handy)\n\nAlso, I don't have the ability to view uploaded images on my end — could you describe the phone for me instead? Things like color, brand, model, or any case details would be really helpful. 😊\n\n✅ Got it — I've logged your **FOUND** report for your **phone**.\n\nGreat news — I also found 2 possible matches among our current lost reports:\n\n| Item | Location | Match Score | Contact Details | Why it matches |\n| --- | --- | --- | --- | --- |\n| phone | Not specified | 53% | Name: Admin Staff, Phone: 945509090, Email: admin@admin.com | Highly similar item names. Some description overlap. Category matches. Visual features correlate by 61% via scanning. |\n| iphone | library | 50% | Name: Anish Kumar, Phone: 020929383, Email: anish@student.edu | Highly similar item names. Some description overlap. Category matches. |\n\nPlease review these carefully. I've safely logged your report, so we'll keep these matches connected while you confirm the details.",
+      "createdAt": "2026-06-18T19:14:18.859Z"
     }
   ],
   "lostItems": [
@@ -244,6 +459,74 @@
       "userPhone": "020929383",
       "id": "db94b5a8-2461-4e77-8ded-37f76f4ba1af",
       "createdAt": "2026-06-17T16:14:47.964Z"
+    },
+    {
+      "status": "ACTIVE",
+      "category": "Other",
+      "priority": "NORMAL",
+      "privateAttributes": {},
+      "appearanceTags": [],
+      "color": null,
+      "brand": "redmi",
+      "dents": null,
+      "hiddenDetails": null,
+      "description": "I want to report a lost item",
+      "location": "",
+      "itemName": "redmi",
+      "date": "",
+      "type": "lost",
+      "userId": "2bf7827f-5201-4007-9531-aee4356ea32b",
+      "userName": "Admin Staff",
+      "userEmail": "admin@admin.com",
+      "userPhone": "945509090",
+      "id": "231db089-bedf-4e7d-ab3b-60c6f881d8ad",
+      "createdAt": "2026-06-18T08:32:33.676Z"
+    },
+    {
+      "status": "ACTIVE",
+      "category": "Other",
+      "priority": "NORMAL",
+      "privateAttributes": {},
+      "appearanceTags": [],
+      "color": null,
+      "brand": "redmi",
+      "dents": null,
+      "hiddenDetails": null,
+      "description": "I want to report a lost item",
+      "location": "",
+      "itemName": "redmi",
+      "date": "",
+      "type": "lost",
+      "userId": "2bf7827f-5201-4007-9531-aee4356ea32b",
+      "userName": "Admin Staff",
+      "userEmail": "admin@admin.com",
+      "userPhone": "945509090",
+      "id": "72482fbe-d3fd-44d5-a16c-30b77682e559",
+      "createdAt": "2026-06-18T08:33:05.302Z",
+      "imageUrl": "/uploads/058a4be9-9a8e-48f3-a587-65e02135c076.jpeg"
+    },
+    {
+      "status": "ACTIVE",
+      "category": "Other",
+      "priority": "NORMAL",
+      "privateAttributes": {},
+      "appearanceTags": [],
+      "color": null,
+      "brand": "redmi",
+      "dents": null,
+      "hiddenDetails": null,
+      "description": "I want to report a lost item",
+      "location": "",
+      "itemName": "phone",
+      "date": "",
+      "type": "lost",
+      "userId": "2bf7827f-5201-4007-9531-aee4356ea32b",
+      "userName": "Admin Staff",
+      "userEmail": "admin@admin.com",
+      "userPhone": "945509090",
+      "id": "4f0c327d-a036-41af-b956-df1852dc5d19",
+      "createdAt": "2026-06-18T08:45:41.590Z",
+      "imageUrl": "/uploads/63721cad-5ba3-4b89-a866-d8762205e76a.jpeg"
     }
   ],
   "foundItems": [
@@ -297,10 +580,90 @@
       "userPhone": "0987656789",
       "id": "7eeea54e-26d0-4776-b43d-a7d397a3a9f3",
       "createdAt": "2026-06-17T16:15:57.862Z"
+    },
+    {
+      "status": "ACTIVE",
+      "category": "Other",
+      "priority": "NORMAL",
+      "privateAttributes": {},
+      "appearanceTags": [],
+      "color": "orange",
+      "brand": "iphone",
+      "dents": null,
+      "hiddenDetails": null,
+      "description": "i want to register a new report i lost my redmi note 9 phone i am attaching a photo also",
+      "location": "library orange colour\n\ni want t",
+      "itemName": "iphone",
+      "date": "",
+      "type": "found",
+      "userId": "edc2d0a0-6b3e-40ca-97f7-e1749b85cf9c",
+      "userName": "attaching a photo",
+      "userEmail": "jane@student.edu",
+      "userPhone": "0987656789",
+      "id": "11b4ecff-4b9c-4737-a8ae-3c25765ae9d3",
+      "createdAt": "2026-06-18T08:27:45.013Z",
+      "imageUrl": "/uploads/c7e2c4cf-8148-417e-86f8-a4bb2cb7191d.jpeg"
+    },
+    {
+      "status": "ACTIVE",
+      "category": "Other",
+      "priority": "NORMAL",
+      "privateAttributes": {},
+      "appearanceTags": [],
+      "color": null,
+      "brand": null,
+      "dents": null,
+      "hiddenDetails": null,
+      "description": "I want to report a found item",
+      "location": "",
+      "itemName": "phone",
+      "date": "",
+      "type": "found",
+      "userId": "edc2d0a0-6b3e-40ca-97f7-e1749b85cf9c",
+      "userName": "Jane Doe",
+      "userEmail": "jane@student.edu",
+      "userPhone": "02934802938",
+      "id": "3beaccee-f3d0-4735-83b3-2bdec80b2af0",
+      "createdAt": "2026-06-18T10:15:38.844Z",
+      "imageUrl": "/uploads/eb3ab9b3-2019-44b7-b0a8-b2db1e87b6d0.jpeg"
+    },
+    {
+      "status": "ACTIVE",
+      "category": "Other",
+      "priority": "NORMAL",
+      "privateAttributes": {},
+      "appearanceTags": [],
+      "color": null,
+      "brand": null,
+      "dents": null,
+      "hiddenDetails": null,
+      "description": "you can see that from the image i uploaded andh 9928390293 is my number",
+      "location": "",
+      "itemName": "phone",
+      "date": "",
+      "type": "found",
+      "userId": "ac233ac6-ca02-4535-83b8-e2b9c651e1e9",
+      "userName": "Jane Doe",
+      "userEmail": "jane@dsce.edu.in",
+      "userPhone": "9928390293",
+      "id": "4cfe3107-3298-4725-ba09-89b105e02437",
+      "createdAt": "2026-06-18T19:14:15.048Z",
+      "imageUrl": "/uploads/456818bd-8048-4f49-833f-9ea536a7e0a3.jpeg"
     }
   ],
   "matches": [],
-  "claims": [],
+  "claims": [
+    {
+      "id": "66b98d86-f39b-4a9f-a4f5-62b2a6487152",
+      "lostItemId": "4cfe3107-3298-4725-ba09-89b105e02437",
+      "foundItemId": "4f0c327d-a036-41af-b956-df1852dc5d19",
+      "status": "PENDING",
+      "answers": [],
+      "confidenceScore": 75,
+      "evaluatorDecision": "review",
+      "createdAt": "2026-06-19T20:27:23.771Z"
+    }
+  ],
   "verificationQuestions": [
     {
       "id": "vq-charger-1",

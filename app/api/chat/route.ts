@@ -12,6 +12,8 @@ import { localExtract } from '@/lib/localIntake';
 import { verifyToken } from '@/lib/jwt';
 import { v4 as uuidv4 } from 'uuid';
 import { MatchResult, Message } from '@/types';
+import { runVisualVerification, runVisualExtraction } from '@/lib/visualAgent';
+import { calculateMatchScore, filterConfidentMatches } from '@/lib/matching';
 
 type ChatMessage = { role: string; content: string };
 
@@ -205,8 +207,9 @@ function prepareMatchContext(
   }
 
   const header = `${loggedLine}\n\nGreat news — I also found ${matches.length === 1 ? 'a possible match' : `${matches.length} possible matches`} among our current ${opposite} reports.`;
-  const tableHeader = '| Item | Location | Match Score | Contact Details | Why it matches |\n| --- | --- | --- | --- | --- |';
+  const tableHeader = '| Image | Item | Location | Match Score | Contact Details | Why it matches |\n| --- | --- | --- | --- | --- | --- |';
   const rows = matches.slice(0, 3).map(m => {
+    const imgStr = m.item?.imageUrl ? `![match](${m.item.imageUrl})` : 'No Image';
     const name = m.item?.itemName || 'Unnamed item';
     const loc = m.item?.location || 'Not specified';
     const reason = m.reasoning?.replace(/\|/g, '\\|').replace(/\n/g, ' ') || 'Several details line up.';
@@ -216,14 +219,14 @@ function prepareMatchContext(
       m.item?.userEmail ? `Email: ${m.item.userEmail}` : '',
     ].filter(Boolean).join(', ') || 'N/A';
     const contact = contactInfo.replace(/\|/g, '\\|').replace(/\n/g, ' ').trim();
-    return `| ${name} | ${loc} | ${m.match_score}% | ${contact} | ${reason} |`;
+    return `| ${imgStr} | ${name} | ${loc} | ${m.match_score}% | ${contact} | ${reason} |`;
   });
   const facts = [header, '', tableHeader, ...rows, ''].join('\n');
   return `${facts}\nPlease review these carefully. I'll keep these matches connected while you confirm details.`;
 }
 
 export async function POST(request: Request) {
-  let body: { messages?: ChatMessage[]; sessionId?: string } = {};
+  let body: { messages?: ChatMessage[]; sessionId?: string; imageUrl?: string } = {};
   try {
     body = (await request.json()) || {};
   } catch {
@@ -234,8 +237,33 @@ export async function POST(request: Request) {
   const sessionId = body.sessionId;
 
   try {
+    // Resolve sessionImageUrl
+    let sessionImageUrl = body.imageUrl;
+    if (sessionId) {
+      if (sessionImageUrl) {
+        store.updateChatSessionImageUrl(sessionId, sessionImageUrl);
+      } else {
+        const sess = store.getChatSessionById(sessionId);
+        if (sess && sess.imageUrl) {
+          sessionImageUrl = sess.imageUrl;
+        }
+      }
+    }
+
     // 1. Detect what we have so far (offline extraction)
     const report = localExtract(userTexts);
+
+    // Call visual extraction agent if image is available to populate attributes automatically
+    if (sessionImageUrl) {
+      const visualDetails = await runVisualExtraction(sessionImageUrl);
+      if (visualDetails) {
+        if (!report.item_name) report.item_name = visualDetails.item_name;
+        if (!report.item_category) report.item_category = visualDetails.item_category;
+        if (!report.color) report.color = visualDetails.color;
+        if (!report.brand) report.brand = visualDetails.brand;
+        if (!report.distinctive_features) report.distinctive_features = visualDetails.distinctive_features;
+      }
+    }
 
     // Pre-populate user info from authenticated user session to resolve repetitive inquiries loop
     const authHeader = request.headers.get('Authorization');
@@ -275,18 +303,38 @@ export async function POST(request: Request) {
     let matches: MatchResult[] = [];
     let loggedItem: any = null;
     let opposite: 'lost' | 'found' = 'lost'; // default
+
+
+
     if (isReportComplete(report)) {
       loggedItem = extractedReportToItem(report);
       // Link the reported item to the authenticated user if logged in
       if (userId) {
         loggedItem.userId = userId;
       }
+      if (sessionImageUrl) {
+        loggedItem.imageUrl = sessionImageUrl;
+      }
       if (loggedItem.type === 'lost') store.addLostItem(loggedItem);
       else store.addFoundItem(loggedItem);
 
       opposite = oppositeType(loggedItem.type);
       const oppositeItems = loggedItem.type === 'lost' ? store.getFoundItems() : store.getLostItems();
-      matches = findConfidentMatches(loggedItem, oppositeItems);
+      const initialMatches = findConfidentMatches(loggedItem, oppositeItems);
+
+      const refinedScored: MatchResult[] = [];
+      for (const m of initialMatches) {
+        if (loggedItem.imageUrl && m.item.imageUrl) {
+          const visualResult = await runVisualVerification(loggedItem, m.item);
+          if (visualResult !== null) {
+            const refined = calculateMatchScore(loggedItem, m.item, visualResult.score, visualResult.explanation);
+            refinedScored.push(refined);
+            continue;
+          }
+        }
+        refinedScored.push(m);
+      }
+      matches = filterConfidentMatches(refinedScored);
     }
 
     // 3. Let the AI brain craft the reply, but give it the grounded match context.

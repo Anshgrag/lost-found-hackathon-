@@ -19,6 +19,7 @@ export interface Item {
   userEmail?: string;
   userPhone?: string;
   studentId?: string;
+  imageUrl?: string;
   createdAt: string;
 }
 
@@ -39,6 +40,7 @@ export interface ChatSession {
   userId: string;
   title: string;
   status: 'ACTIVE' | 'ARCHIVED';
+  imageUrl?: string;
   createdAt: string;
   updatedAt: string;
 }
